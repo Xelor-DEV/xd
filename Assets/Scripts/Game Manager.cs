@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     public Image finalImageMonth;
     public GameObject gameOverPanel; // Panel para mostrar derrota
 
+    public AudioSource music;
+    public AudioSource sfx;
+
     private int decisionCount = 0;
 
     private void Start()
@@ -25,6 +28,8 @@ public class GameManager : MonoBehaviour
         ResetGame();
         ShowInitialMonthText();
         Debug.Log("Dinero inicial: " + moneyAdminister);
+        music.mute = false;
+        sfx.mute = false;
     }
 
     private void Update()
@@ -37,14 +42,14 @@ public class GameManager : MonoBehaviour
         }
 
         // Detecta la tecla 'Esc' para salir del juego
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (gameOverPanel.activeSelf && Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("Saliendo del juego...");
             Application.Quit(); // Cierra el juego
         }
 
         // Detecta la tecla 'Enter' para ejecutar otra acción (puedes personalizar la acción aquí)
-        if (Input.GetKeyDown(KeyCode.Return)) // También puede ser KeyCode.KeypadEnter para teclados numéricos
+        if (gameOverPanel.activeSelf && Input.GetKeyDown(KeyCode.M)) // También puede ser KeyCode.KeypadEnter para teclados numéricos
         {
             Debug.Log("Acción con Enter ejecutada.");
             SceneManager.LoadScene("Menu");
@@ -122,6 +127,8 @@ public class GameManager : MonoBehaviour
         gameOverPanel.SetActive(true); // Muestra el panel de derrota
         Time.timeScale = 0; // Pausa el juego
         Debug.Log("Juego terminado. Has perdido.");
+        music.mute = true;
+        sfx.mute = true;
     }
 
     private void ReloadScene()

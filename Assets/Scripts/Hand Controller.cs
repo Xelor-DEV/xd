@@ -106,7 +106,7 @@ public class HandController : MonoBehaviour
     }
 
     private void ToggleReport()
-    {
+    {    
         if (report != null)
         {
             if (report.transform.position == originalReportPosition)
@@ -122,6 +122,12 @@ public class HandController : MonoBehaviour
 
     private void ToggleDecisiones()
     {
+        if (report != null && report.transform.position != originalReportPosition)
+        {
+            Debug.Log("No puedes abrir decisiones mientras el reporte está movido.");
+            return; 
+        }
+
         if (decisiones != null)
         {
             if (decisiones.transform.position == originalDecisionesPosition)

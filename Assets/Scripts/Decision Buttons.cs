@@ -14,6 +14,14 @@ public class DecisionButtons : MonoBehaviour
     [SerializeField] private GameObject popupGachas;
     [SerializeField] private GameObject popupAds;  
     [SerializeField] private GameObject popupPrice;
+
+    [SerializeField] private List<GameObject> particlePrefabs; // Lista de prefabs de partículas para cada decisión
+    [SerializeField] private List<AudioClip> decisionSounds; // Lista de sonidos para cada decisión
+    [SerializeField] private float particleLifetime = 6f; // Tiempo de vida de las partículas
+    [SerializeField] private GameObject particleSpawnPosition; // Posiciones específicas para cada decisión
+    [SerializeField] private AudioSource audioSource; // Componente AudioSource para reproducir los sonidos
+
+
     private int selectedIndex = 0;
     private bool canHandleInput = false;
     private bool hasSelected = false; 
@@ -72,14 +80,17 @@ public class DecisionButtons : MonoBehaviour
             case 0:
                 OnAddGachasClicked();
                 ShowGachasPopup();
+                SpawnParticlesAndSound(0);
                 break;
             case 1:
                 OnAddAdsClicked();
                 ShowAdsPopup();
+                SpawnParticlesAndSound(1);
                 break;
             case 2:
                 OnRaisePriceClicked();
                 ShowPricePopup();
+                SpawnParticlesAndSound(2);
                 break;
             default:
                 Debug.LogWarning("Índice de botón no válido.");
@@ -101,6 +112,40 @@ public class DecisionButtons : MonoBehaviour
     {
         gameManager.TakeDecision(raisePriceDecision);
     }
+
+    private void SpawnParticlesAndSound(int decisionIndex)
+    {
+        if (decisionIndex < 0 || decisionIndex >= particlePrefabs.Count)
+        {
+            Debug.LogWarning("Índice de decisión no válido para partículas o posiciones.");
+            return;
+        }
+
+        // Instanciar el sistema de partículas en la posición específica
+        GameObject particleInstance = Instantiate(
+            particlePrefabs[decisionIndex],
+            particleSpawnPosition.transform.position, particlePrefabs[decisionIndex].transform.rotation
+        );
+
+        // Reproducir el sonido correspondiente
+        if (decisionIndex < decisionSounds.Count && decisionSounds[decisionIndex] != null)
+        {
+            audioSource.PlayOneShot(decisionSounds[decisionIndex]);
+        }
+
+        // Destruir las partículas después de un tiempo
+        StartCoroutine(DestroyParticlesAfterTime(particleInstance, particleLifetime));
+    }
+
+    private IEnumerator DestroyParticlesAfterTime(GameObject particleInstance, float lifetime)
+    {
+        yield return new WaitForSeconds(lifetime);
+        if (particleInstance != null)
+        {
+            Destroy(particleInstance);
+        }
+    }
+
     private void ShowGachasPopup()
     {
         popupGachas.SetActive(true);
@@ -138,6 +183,8 @@ public class DecisionButtons : MonoBehaviour
             });
         });
     }
+
+
 
     private void ShowPricePopup()
     {
