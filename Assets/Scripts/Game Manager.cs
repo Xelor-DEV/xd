@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        // Detecta la tecla 'R' solo si el panel de Game Over está activo
+        // Detecta la tecla 'R' solo si el panel de Game Over estï¿½ activo
         if (gameOverPanel.activeSelf && Input.GetKeyDown(KeyCode.R))
         {
             Debug.Log("Reiniciando juego...");
@@ -48,10 +48,12 @@ public class GameManager : MonoBehaviour
             Application.Quit(); // Cierra el juego
         }
 
-        // Detecta la tecla 'Enter' para ejecutar otra acción (puedes personalizar la acción aquí)
-        if (gameOverPanel.activeSelf && Input.GetKeyDown(KeyCode.M)) // También puede ser KeyCode.KeypadEnter para teclados numéricos
+        // Detecta la tecla 'Enter' para ejecutar otra acciï¿½n (puedes personalizar la acciï¿½n aquï¿½)
+        if (gameOverPanel.activeSelf && Input.GetKeyDown(KeyCode.M)) // Tambiï¿½n puede ser KeyCode.KeypadEnter para teclados numï¿½ricos
         {
-            Debug.Log("Acción con Enter ejecutada.");
+            Debug.Log("Acciï¿½n con Enter ejecutada.");
+            Cursor.lockState = CursorLockMode.None; // Desbloquea el cursor
+            Cursor.visible = true; // Hace visible el cursor
             SceneManager.LoadScene("Menu");
         }
     }
@@ -90,7 +92,7 @@ public class GameManager : MonoBehaviour
 
         userSatisfaction += decision.satisfactionImpact;
 
-        // Validación para que no se pase de 100%
+        // Validaciï¿½n para que no se pase de 100%
         if (userSatisfaction > 100)
         {
             userSatisfaction = 100;
@@ -167,7 +169,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateReportPanel()
     {
-        reportPanelText.text = "Mes: " + month + "\n\n\nDinero: " + moneyAdminister + "\n\n\nSatisfacción: " + userSatisfaction + "%";
+        reportPanelText.text = "Mes: " + month + "\n\n\nDinero: " + moneyAdminister + "\n\n\nSatisfacciï¿½n: " + userSatisfaction + "%";
     }
 
     private void UpdateMonthText()
@@ -184,7 +186,7 @@ public class GameManager : MonoBehaviour
         }
         else if (userSatisfaction < 60)
         {
-            reportSatisfactionFinalText.text = "Lograste mantenerte, pero la satisfacción del usuario es baja.";
+            reportSatisfactionFinalText.text = "Lograste mantenerte, pero la satisfacciï¿½n del usuario es baja.";
         }
         else
         {
